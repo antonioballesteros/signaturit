@@ -29,10 +29,7 @@ export default function Index() {
       <ul>
         {posts.map((post) => (
           <li key={post.id}>
-            <Link
-              to={post.id}
-              className="link"
-            >
+            <Link to={post.id} className="link">
               {post.title} - {post.date}
             </Link>
           </li>
