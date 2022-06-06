@@ -1,5 +1,5 @@
 import { DocumentTypeEnum } from "./type";
-import type { GetDocumentsType } from "./type";
+import type { GetDocumentsType, DocumentType, NewDocumentType } from "./type";
 
 // Fake database :/
 const setFakeType = (id: number): DocumentTypeEnum => {
@@ -27,17 +27,18 @@ const setFakeImage = (id: number): string => {
   return `https://picsum.photos/id/${id}/200/300`;
 };
 
-const buildFakeDocuments = () => {
+const buildFakeDocuments = (): DocumentType[] => {
   return [...Array(250).keys()].map((id) => {
     const type = setFakeType(id);
-    return {
+    const document: DocumentType = {
       id: `aaa${id}`,
       type,
       title: `Document ${id}`,
-      date: "11-05-2020",
+      date: "2022-01-26T11:11:41.124Z",
       text: type !== DocumentTypeEnum.SIMPLE ? setFakeText() : undefined,
       image: type === DocumentTypeEnum.ADVANCED ? setFakeImage(id) : undefined,
     };
+    return document;
   });
 };
 
@@ -65,4 +66,41 @@ export async function getDocuments(
     total: list.length,
     data: list.slice(first, last),
   };
+}
+
+export async function getDocument(
+  id: string
+): Promise<DocumentType | undefined> {
+  return documents.find((document) => document.id === id);
+}
+
+export async function deleteDocument(id: string): Promise<boolean> {
+  const index: number = documents.findIndex((document) => document.id === id);
+  if (index === -1) {
+    return false;
+  }
+  documents.splice(index, 1);
+  return true;
+}
+
+export async function createDocument({
+  type,
+  title,
+  text,
+  image,
+}: NewDocumentType): Promise<DocumentType> {
+  const rnd = Math.floor(Math.random() * 1000);
+  const date = new Date().toJSON();
+
+  const newDocument: DocumentType = {
+    id: `created${rnd}`,
+    type,
+    title,
+    date,
+    text,
+    image,
+  };
+  documents.push(newDocument);
+
+  return newDocument;
 }

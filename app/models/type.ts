@@ -13,6 +13,13 @@ export type DocumentType = {
   image?: string;
 };
 
+export type NewDocumentType = {
+  type: DocumentTypeEnum;
+  title: string;
+  text?: string;
+  image?: string;
+};
+
 export type GetDocumentsType = {
   total: number;
   data: DocumentType[];
