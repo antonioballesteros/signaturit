@@ -10,3 +10,8 @@ export type DocumentType = {
   title: string;
   date: string;
 };
+
+export type GetDocumentsType = {
+  total: number;
+  data: DocumentType[];
+};

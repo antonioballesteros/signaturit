@@ -9,29 +9,34 @@ import {
   useSubmit,
 } from "@remix-run/react";
 
-import { Select } from "~/components";
+import { Select, Paginator } from "~/components";
 import { getDocuments } from "~/models/document.server";
-import type { DocumentType } from "~/models/type";
+import type { GetDocumentsType } from "~/models/type";
 import { DocumentTypeEnum } from "~/models/type";
 
 import styles from "~/styles/index.css";
+import stylesPaginator from "~/styles/Components/Paginator/index.css";
 
+// TODO
+// Check if this is the correct way to add styles from a component
 export function links() {
-  return [{ rel: "stylesheet", href: styles }];
+  return [{ rel: "stylesheet", href: styles }, { rel: "stylesheet", href: stylesPaginator }];
 }
 
 type LoaderData = {
-  documents: Awaited<DocumentType[]>;
+  documents: Awaited<GetDocumentsType>;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const search = new URLSearchParams(url.search);
   const filter = search.get("filter");
-  console.log("LoaderFunction: filter", filter);
+  const page = parseInt(search.get("page") || "1");
+  const length = parseInt(search.get("length") || "10");
+  console.log("LoaderFunction: params", { filter, page });
 
   return json<LoaderData>({
-    documents: await getDocuments(filter as DocumentTypeEnum),
+    documents: await getDocuments(filter as DocumentTypeEnum, page, length),
   });
 };
 
@@ -59,29 +64,31 @@ export default function Index() {
   const [params] = useSearchParams();
   const submit = useSubmit();
 
-  console.log("documents", documents);
-  console.log("filterId", params.get("query"));
-
   function handleChange(event: any) {
     submit(event.currentTarget, { replace: true });
   }
+
+  const page = parseInt(params.get("page") || "1");
+  const length = parseInt(params.get("length") || "10");
+
+  console.log("documents", documents);
 
   return (
     <div className="root">
       <h1>Documents</h1>
       <Form method="get" onChange={handleChange} action="/">
         <Select name="filter" options={FILTERS} selected={params.get("filter")} />
+        <ul className="documents">
+          {documents.data.map((document) => (
+            <li key={document.id}>
+              <Link to={"document/" + document.id} className="link">
+                {document.type} - {document.title} - {document.date}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Paginator name="page" total={documents.total} actual={page} length={length} />
       </Form>
-
-      <ul>
-        {documents.map((document) => (
-          <li key={document.id}>
-            <Link to={document.id} className="link">
-              {document.type} - {document.title} - {document.date}
-            </Link>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
