@@ -1,5 +1,3 @@
-import type cuid from "cuid";
-
 export enum DocumentTypeEnum {
   "SIMPLE" = "SIMPLE",
   "CUSTOM" = "CUSTOM",
@@ -7,7 +5,7 @@ export enum DocumentTypeEnum {
 }
 
 export type DocumentType = {
-  id: ReturnType<typeof cuid>;
+  id: string;
   type: DocumentTypeEnum;
   title: string;
   date: string;

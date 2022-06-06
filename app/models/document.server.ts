@@ -1,5 +1,3 @@
-import cuid from "cuid";
-
 import { DocumentTypeEnum } from "./type";
 import type { GetDocumentsType, DocumentType, NewDocumentType } from "./type";
 
@@ -33,7 +31,7 @@ const buildFakeDocuments = (): DocumentType[] => {
   return [...Array(250).keys()].map((id) => {
     const type = setFakeType(id);
     const document: DocumentType = {
-      id: `doc#${cuid()}`,
+      id: `${id}`,
       type,
       title: `Document ${id}`,
       date: "2022-01-26T11:11:41.124Z",
@@ -93,8 +91,12 @@ export async function createDocument({
 }: NewDocumentType): Promise<DocumentType> {
   const date = new Date().toJSON();
 
+  const nextId = documents.reduce((prev: number, document: DocumentType) => {
+    return Math.max(prev, parseInt(document.id));
+  }, 0);
+
   const newDocument: DocumentType = {
-    id: `doc#${cuid()}`,
+    id: `${nextId + 1}`,
     type,
     title,
     date,
