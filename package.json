@@ -7,6 +7,7 @@
     "dev": "concurrently \"npm run sass\" \"remix dev\"",
     "start": "remix-serve build",
     "sass": "sass --watch app/:app/",
+    "lint": "prettier --check .",
     "format": "prettier --write ."
   },
   "prettier": {},
