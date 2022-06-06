@@ -40,3 +40,21 @@
     }
   }
 }
+
+.documents {
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    display: flex;
+  }
+}
+
+@media (min-width: 600px) {
+  .documents {
+    .sidebar {
+      display: flex;
+    }
+  }
+}

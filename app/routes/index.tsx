@@ -2,7 +2,7 @@ import {
   Link,
 } from "@remix-run/react";
 
-import styles from "~/styles/index.css";
+import styles from "~/styles/routes/index.css";
 
 export function links() {
   return [
