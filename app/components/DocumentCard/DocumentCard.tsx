@@ -10,12 +10,15 @@ const showType = (type: DocumentTypeEnum): string => {
 
 const DocumentCard = ({ document }: DocumentCardType) => {
     return <div className="document-card">
-        <div className="header">
-            {document.title}
-        </div>
-        <div className="body">
-            <div className="type">{showType(document.type)}</div>
-            <div className="type">{document.date}</div>
+        {!!document.image && <img src={document.image} alt={document.title} />}
+        <div className="card">
+            <div className="header">
+                {document.title}
+            </div>
+            <div className="body">
+                <div className="type">{showType(document.type)}</div>
+                <div className="type">{document.date}</div>
+            </div>
         </div>
     </div>
 }
