@@ -1,6 +1,6 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useCatch, useLoaderData } from "@remix-run/react";
+import { Link, Form, useCatch, useLoaderData } from "@remix-run/react";
 
 import type { DocumentType, DocumentTypeEnum } from "~/models/type";
 import { deleteDocument } from "~/models/document.server";
@@ -55,6 +55,9 @@ export default function DocumentDetailsPage() {
             <div className="date">{showDate(data.document.createdAt)}</div>
           </div>
           <Form method="post">
+            <Link to="/documents" className="">
+              <button>Close</button>
+            </Link>
             <button
               type="submit"
               className=""

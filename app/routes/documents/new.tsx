@@ -1,6 +1,6 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Link, Form, useActionData } from "@remix-run/react";
 import * as React from "react";
 
 import { createDocument } from "~/models/document.server";
@@ -132,6 +132,10 @@ export default function NewDocumentPage() {
                 </div>
 
                 <div className="buttons">
+                    <Link to="/documents" className="">
+                        <button>Close</button>
+                    </Link>
+
                     <button
                         type="submit"
                         className=""
