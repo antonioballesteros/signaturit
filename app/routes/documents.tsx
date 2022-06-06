@@ -31,17 +31,21 @@ export function links() {
 
 type LoaderData = {
   documents: Awaited<GetDocumentsType>;
+  urlSearched: string;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
-  const search = new URLSearchParams(url.search);
+  const urlSearched = url.search;
+  const search = new URLSearchParams(urlSearched);
+
   const filter = search.get("filter");
   const page = parseInt(search.get("page") || "1");
   const length = parseInt(search.get("length") || "10");
 
   return json<LoaderData>({
     documents: await getDocuments(filter as DocumentTypeEnum, page, length),
+    urlSearched
   });
 };
 
@@ -65,7 +69,7 @@ const FILTERS = [
 ];
 
 export default function Index() {
-  const { documents }: LoaderData = useLoaderData();
+  const { documents, urlSearched }: LoaderData = useLoaderData();
   const [params] = useSearchParams();
   const submit = useSubmit();
 
@@ -83,7 +87,7 @@ export default function Index() {
         <Form method="get" onChange={handleChange}>
 
           <div className="header">
-            <Link to="new" className="">
+            <Link to={`new${urlSearched}`} className="">
               + New document
             </Link>
 
@@ -95,7 +99,7 @@ export default function Index() {
           <ul className="document-list">
             {documents.data.map((document) => (
               <li key={document.id}>
-                <Link to={document.id} className="link">
+                <Link to={`${document.id}${urlSearched}`} className="link">
                   <DocumentCard document={document} />
                 </Link>
               </li>
@@ -103,11 +107,11 @@ export default function Index() {
           </ul>
           <Paginator name="page" total={documents.total} actual={page} length={length} />
         </Form>
-      </div>
+      </div >
       <div className="main">
         <Outlet />
       </div>
-    </div>
+    </div >
 
   );
 }

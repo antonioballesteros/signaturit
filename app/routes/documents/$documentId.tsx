@@ -16,46 +16,53 @@ export function links() {
 
 type LoaderData = {
   document: DocumentType;
+  urlSearched: string
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
+  const url = new URL(request.url);
+  const urlSearched = url.search;
+
   const document = await getDocument(params.documentId || "");
   if (!document) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json<LoaderData>({ document });
+  return json<LoaderData>({ document, urlSearched });
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
+  const url = new URL(request.url);
+  const urlSearched = url.search;
+
   const result = await deleteDocument(params.documentId || "");
 
   if (!result) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  return redirect("/documents");
+  return redirect(`/documents${urlSearched}`);
 };
 
 export default function DocumentDetailsPage() {
-  const data = useLoaderData() as LoaderData;
+  const { document, urlSearched } = useLoaderData() as LoaderData;
 
   return (
     <div className="document">
-      <h2>{data.document.title}</h2>
+      <h2>{document.title}</h2>
       <div className="body">
-        {!!data.document.image &&
+        {!!document.image &&
           <div className="img">
-            <img src={data.document.image} alt={data.document.title} />
+            <img src={document.image} alt={document.title} />
           </div>
         }
         <div className="info">
-          {data.document.text}
+          {document.text}
           <div className="footer">
-            <div>{showType(data.document.type as DocumentTypeEnum)}</div>
-            <div className="date">{showDate(data.document.createdAt)}</div>
+            <div>{showType(document.type as DocumentTypeEnum)}</div>
+            <div className="date">{showDate(document.createdAt)}</div>
           </div>
-          <Form method="post">
-            <Link to="/documents" className="">
+          <Form method="post" action={`/documents/${document.id}${urlSearched}`}>
+            <Link to={`/documents${urlSearched}`} className="">
               <button>Close</button>
             </Link>
             <button

@@ -1,6 +1,6 @@
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Link, Form, useActionData } from "@remix-run/react";
+import { Link, Form, useActionData, useLoaderData, } from "@remix-run/react";
 import * as React from "react";
 
 import { createDocument } from "~/models/document.server";
@@ -46,7 +46,22 @@ export const action: ActionFunction = async ({ request }) => {
     return redirect(`/documents/${note.id}`);
 };
 
+type LoaderData = {
+    urlSearched: string;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+    const url = new URL(request.url);
+    const urlSearched = url.search;
+
+    return json<LoaderData>({
+        urlSearched
+    });
+};
+
 export default function NewDocumentPage() {
+    const { urlSearched }: LoaderData = useLoaderData();
+
     const actionData = useActionData() as ActionData;
     const titleRef = React.useRef<HTMLInputElement>(null);
     const textRef = React.useRef<HTMLTextAreaElement>(null);
@@ -132,7 +147,7 @@ export default function NewDocumentPage() {
                 </div>
 
                 <div className="buttons">
-                    <Link to="/documents" className="">
+                    <Link to={`/documents${urlSearched}`} className="">
                         <button>Close</button>
                     </Link>
 
