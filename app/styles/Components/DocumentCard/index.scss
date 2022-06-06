@@ -2,9 +2,14 @@
   padding: 4px;
   display: flex;
 
-  img {
+  .img {
+    min-width: 36px;
     width: 36px;
     margin-right: 16px;
+
+    img {
+      width: 100%;
+    }
   }
 
   .card {
@@ -12,6 +17,7 @@
     flex-direction: column;
     justify-content: space-around;
     flex-grow: 1;
+    overflow: hidden;
     color: blueviolet;
 
     .header {

@@ -43,7 +43,11 @@ export default function DocumentDetailsPage() {
     <div className="document">
       <h2>{data.document.title}</h2>
       <div className="body">
-        {!!data.document.image && <img src={data.document.image} alt={data.document.title} />}
+        {!!data.document.image &&
+          <div className="img">
+            <img src={data.document.image} alt={data.document.title} />
+          </div>
+        }
         <div className="info">
           {data.document.text}
           <div className="footer">

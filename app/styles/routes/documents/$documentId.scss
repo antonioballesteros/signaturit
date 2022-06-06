@@ -7,8 +7,14 @@
   .body {
     display: flex;
 
-    img {
+    .img {
+      min-width: 200px;
+      width: 200px;
       margin-right: 16px;
+
+      img {
+        width: 100%;
+      }
     }
 
     .info {

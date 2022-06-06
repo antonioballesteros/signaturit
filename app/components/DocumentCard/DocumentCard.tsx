@@ -9,7 +9,11 @@ type DocumentCardType = {
 
 const DocumentCard = ({ document }: DocumentCardType) => {
     return <div className="document-card">
-        {!!document.image && <img src={document.image} alt={document.title} />}
+        {!!document.image &&
+            <div className="img">
+                <img src={document.image} alt={document.title} />
+            </div>
+        }
         <div className="card">
             <div className="header">
                 {document.title}
