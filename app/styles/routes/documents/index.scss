@@ -1,11 +1,16 @@
-.index {
+.document-index {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex-grow: 1;
 
-  button {
-    background-color: rebeccapurple;
-    color: white;
+  h2 {
+    margin: 0;
+  }
+
+  a {
     padding: 8px;
     margin: 16px;
     font-size: 32px;
