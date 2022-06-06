@@ -1,20 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
 import { DocumentTypeEnum } from "../app/models/type";
+import { getTypeFromNewDocument } from "../app/utils";
 
 const prisma = new PrismaClient();
 
 // _____________
-
-const setFakeType = (id: number): DocumentTypeEnum => {
-  switch (id % 3) {
-    case 1:
-      return DocumentTypeEnum.CUSTOM;
-    case 2:
-      return DocumentTypeEnum.ADVANCED;
-  }
-  return DocumentTypeEnum.SIMPLE;
-};
 
 const setFakeText = (): string => {
   return `Lorem ipsum dolor sit amet, consectetur adipiscing 
@@ -35,12 +26,15 @@ const setFakeImage = (id: number): string => {
 
 async function seed() {
   [...Array(250).keys()].map(async (id) => {
-    const type = setFakeType(id);
+    const text = id % 3 >= 1 ? setFakeText() : undefined;
+    const image = id % 3 === 2 ? setFakeImage(id) : undefined;
+
+    const type = getTypeFromNewDocument(text, image);
     const document = {
-      type,
       title: `Fake Document ${id}`,
-      text: type !== DocumentTypeEnum.SIMPLE ? setFakeText() : undefined,
-      image: type === DocumentTypeEnum.ADVANCED ? setFakeImage(id) : undefined,
+      type,
+      text,
+      image,
     };
 
     console.log("seed document", document);

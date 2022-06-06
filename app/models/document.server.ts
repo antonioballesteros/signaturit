@@ -1,5 +1,6 @@
 import type { DocumentTypeEnum } from "./type";
 import type { GetDocumentsType, DocumentType, NewDocumentType } from "./type";
+import { getTypeFromNewDocument } from "~/utils";
 
 import { prisma } from "~/db.server";
 
@@ -57,11 +58,12 @@ export async function deleteDocument(id: string): Promise<boolean> {
 }
 
 export async function createDocument({
-  type,
   title,
   text,
   image,
 }: NewDocumentType): Promise<DocumentType> {
+  const type = getTypeFromNewDocument(text, image);
+
   const newDocument = {
     type,
     title,

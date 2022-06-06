@@ -13,10 +13,9 @@ export type DocumentType = {
 };
 
 export type NewDocumentType = {
-  type: DocumentTypeEnum;
   title: string;
-  text: string | null;
-  image: string | null;
+  text: string | undefined;
+  image: string | undefined;
 };
 
 export type GetDocumentsType = {

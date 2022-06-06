@@ -3,11 +3,16 @@
   display: flex;
 
   .sidebar {
-    width: 360px;
+    min-width: 360px;
+    border-right: 1px solid rebeccapurple;
 
     .header {
       display: flex;
       justify-content: space-between;
+    }
+
+    form {
+      padding: 0 12px;
     }
   }
 

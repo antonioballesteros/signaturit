@@ -20,9 +20,8 @@ type ActionData = {
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
     const title = formData.get("title") as string;
-    const type = formData.get("type") as DocumentTypeEnum;
-    const text = formData.get("text") as string;
-    const image = formData.get("image") as string;
+    const text = (formData.get("text") as string) || undefined;
+    const image = (formData.get("image") as string) || undefined;
 
     if (typeof title !== "string" || title.length === 0) {
         return json<ActionData>(
@@ -31,16 +30,8 @@ export const action: ActionFunction = async ({ request }) => {
         );
     }
 
-    // if (typeof body !== "string" || body.length === 0) {
-    //     return json<ActionData>(
-    //         { errors: { body: "Body is required" } },
-    //         { status: 400 }
-    //     );
-    // }
-
     const newDocument: NewDocumentType = {
         title,
-        type,
         text,
         image
     }
@@ -53,14 +44,12 @@ export const action: ActionFunction = async ({ request }) => {
 export default function NewDocumentPage() {
     const actionData = useActionData() as ActionData;
     const titleRef = React.useRef<HTMLInputElement>(null);
-    const typeRef = React.useRef<HTMLSelectElement>(null);
     const textRef = React.useRef<HTMLTextAreaElement>(null);
+    const imageRef = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
         if (actionData?.errors?.title) {
             titleRef.current?.focus();
-        } else if (actionData?.errors?.text) {
-            textRef.current?.focus();
         }
     }, [actionData]);
 
@@ -76,11 +65,11 @@ export default function NewDocumentPage() {
         >
             <div>
                 <label className="">
-                    <span>Title: </span>
+                    <span>Title:</span>
                     <input
                         ref={titleRef}
                         name="title"
-                        className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+                        className=""
                         aria-invalid={actionData?.errors?.title ? true : undefined}
                         aria-errormessage={
                             actionData?.errors?.title ? "title-error" : undefined
@@ -96,34 +85,12 @@ export default function NewDocumentPage() {
 
             <div>
                 <label className="">
-                    <span>Type: </span>
-                    <select
-                        ref={typeRef}
-                        name="type"
-                    >
-                        {Object.keys(DocumentTypeEnum).map(type => {
-                            return (
-                                <option key={type} value={type}>{showType(type as DocumentTypeEnum)}</option>
-                            )
-                        })}
-                    </select>
-
-                </label>
-                {actionData?.errors?.title && (
-                    <div className="pt-1 text-red-700" id="title-error">
-                        {actionData.errors.title}
-                    </div>
-                )}
-            </div>
-
-            <div>
-                <label className="">
                     <span>Text: </span>
                     <textarea
                         ref={textRef}
-                        name="body"
+                        name="text"
                         rows={8}
-                        className="w-full flex-1 rounded-md border-2 border-blue-500 py-2 px-3 text-lg leading-6"
+                        className=""
                         aria-invalid={actionData?.errors?.text ? true : undefined}
                         aria-errormessage={
                             actionData?.errors?.text ? "text-error" : undefined
@@ -131,16 +98,36 @@ export default function NewDocumentPage() {
                     />
                 </label>
                 {actionData?.errors?.text && (
-                    <div className="pt-1 text-red-700" id="text-error">
+                    <div className="" id="text-error">
                         {actionData.errors.text}
                     </div>
                 )}
             </div>
 
-            <div className="text-right">
+            <div>
+                <label className="">
+                    <span>Image: (write url here) </span>
+                    <input
+                        ref={imageRef}
+                        name="image"
+                        className=""
+                        aria-invalid={actionData?.errors?.image ? true : undefined}
+                        aria-errormessage={
+                            actionData?.errors?.image ? "image-error" : undefined
+                        }
+                    />
+                </label>
+                {actionData?.errors?.image && (
+                    <div className="" id="text-error">
+                        {actionData.errors.image}
+                    </div>
+                )}
+            </div>
+
+            <div className="">
                 <button
                     type="submit"
-                    className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+                    className=""
                 >
                     Save
                 </button>

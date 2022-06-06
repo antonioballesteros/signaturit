@@ -39,7 +39,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const filter = search.get("filter");
   const page = parseInt(search.get("page") || "1");
   const length = parseInt(search.get("length") || "10");
-  console.log("LoaderFunction: params", { filter, page });
 
   return json<LoaderData>({
     documents: await getDocuments(filter as DocumentTypeEnum, page, length),
