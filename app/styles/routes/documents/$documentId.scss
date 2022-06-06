@@ -1,0 +1,43 @@
+.document {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 16px;
+
+  .body {
+    display: flex;
+
+    img {
+      margin-right: 16px;
+    }
+
+    .info {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+
+      .footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px 16px;
+
+        .date {
+          margin-left: 16px;
+        }
+      }
+      form {
+        display: flex;
+        flex-direction: row-reverse;
+
+        button {
+          background-color: rebeccapurple;
+          color: white;
+          padding: 8px;
+          margin: 16px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

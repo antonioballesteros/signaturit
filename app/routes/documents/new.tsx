@@ -4,9 +4,8 @@ import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
 
 import { createDocument } from "~/models/document.server";
-import { DocumentTypeEnum } from "~/models/type";
 import type { NewDocumentType } from "~/models/type";
-import { showType } from '~/utils'
+import styles from "~/styles/routes/documents/new.css";
 
 type ActionData = {
     errors?: {
@@ -16,6 +15,12 @@ type ActionData = {
         image?: string
     };
 };
+
+export function links() {
+    return [
+        { rel: "stylesheet", href: styles }
+    ];
+}
 
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
@@ -54,84 +59,87 @@ export default function NewDocumentPage() {
     }, [actionData]);
 
     return (
-        <Form
-            method="post"
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-                width: "100%",
-            }}
-        >
-            <div>
-                <label className="">
-                    <span>Title:</span>
-                    <input
-                        ref={titleRef}
-                        name="title"
-                        className=""
-                        aria-invalid={actionData?.errors?.title ? true : undefined}
-                        aria-errormessage={
-                            actionData?.errors?.title ? "title-error" : undefined
-                        }
-                    />
-                </label>
-                {actionData?.errors?.title && (
-                    <div className="pt-1 text-red-700" id="title-error">
-                        {actionData.errors.title}
-                    </div>
-                )}
-            </div>
+        <div className="new">
+            <h2>Create new document</h2>
+            <Form
+                method="post"
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
+                    width: "100%",
+                }}
+            >
+                <div className="field">
+                    <label>
+                        <span>Title:</span>
+                        <input
+                            ref={titleRef}
+                            name="title"
+                            className=""
+                            aria-invalid={actionData?.errors?.title ? true : undefined}
+                            aria-errormessage={
+                                actionData?.errors?.title ? "title-error" : undefined
+                            }
+                        />
+                    </label>
+                    {actionData?.errors?.title && (
+                        <div className="error" id="title-error">
+                            {actionData.errors.title}
+                        </div>
+                    )}
+                </div>
 
-            <div>
-                <label className="">
-                    <span>Text: </span>
-                    <textarea
-                        ref={textRef}
-                        name="text"
-                        rows={8}
-                        className=""
-                        aria-invalid={actionData?.errors?.text ? true : undefined}
-                        aria-errormessage={
-                            actionData?.errors?.text ? "text-error" : undefined
-                        }
-                    />
-                </label>
-                {actionData?.errors?.text && (
-                    <div className="" id="text-error">
-                        {actionData.errors.text}
-                    </div>
-                )}
-            </div>
+                <div className="field">
+                    <label className="">
+                        <span>Text: </span>
+                        <textarea
+                            ref={textRef}
+                            name="text"
+                            rows={8}
+                            className=""
+                            aria-invalid={actionData?.errors?.text ? true : undefined}
+                            aria-errormessage={
+                                actionData?.errors?.text ? "text-error" : undefined
+                            }
+                        />
+                    </label>
+                    {actionData?.errors?.text && (
+                        <div className="" id="text-error">
+                            {actionData.errors.text}
+                        </div>
+                    )}
+                </div>
 
-            <div>
-                <label className="">
-                    <span>Image: (write url here) </span>
-                    <input
-                        ref={imageRef}
-                        name="image"
-                        className=""
-                        aria-invalid={actionData?.errors?.image ? true : undefined}
-                        aria-errormessage={
-                            actionData?.errors?.image ? "image-error" : undefined
-                        }
-                    />
-                </label>
-                {actionData?.errors?.image && (
-                    <div className="" id="text-error">
-                        {actionData.errors.image}
-                    </div>
-                )}
-            </div>
+                <div className="field">
+                    <label className="">
+                        <span>Image: (write url here) </span>
+                        <input
+                            ref={imageRef}
+                            name="image"
+                            className=""
+                            aria-invalid={actionData?.errors?.image ? true : undefined}
+                            aria-errormessage={
+                                actionData?.errors?.image ? "image-error" : undefined
+                            }
+                        />
+                    </label>
+                    {actionData?.errors?.image && (
+                        <div className="" id="text-error">
+                            {actionData.errors.image}
+                        </div>
+                    )}
+                </div>
 
-            <div className="">
-                <button
-                    type="submit"
-                    className=""
-                >
-                    Save
-                </button>
-            </div>
-        </Form>
+                <div className="buttons">
+                    <button
+                        type="submit"
+                        className=""
+                    >
+                        Save
+                    </button>
+                </div>
+            </Form>
+        </div>
     );
 }

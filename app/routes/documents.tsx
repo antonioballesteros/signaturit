@@ -15,7 +15,7 @@ import { getDocuments } from "~/models/document.server";
 import type { GetDocumentsType } from "~/models/type";
 import { DocumentTypeEnum } from "~/models/type";
 
-import styles from "~/styles/documents.css";
+import styles from "~/styles/routes/documents.css";
 import stylesPaginator from "~/styles/Components/Paginator/index.css";
 import stylesDocumentCard from "~/styles/Components/DocumentCard/index.css";
 

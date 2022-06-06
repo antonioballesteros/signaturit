@@ -6,7 +6,13 @@ import type { DocumentType, DocumentTypeEnum } from "~/models/type";
 import { deleteDocument } from "~/models/document.server";
 import { getDocument } from "~/models/document.server";
 import { showType, showDate } from "~/utils"
+import styles from "~/styles/routes/documents/$documentId.css";
 
+export function links() {
+  return [
+    { rel: "stylesheet", href: styles }
+  ];
+}
 
 type LoaderData = {
   document: DocumentType;
@@ -34,22 +40,26 @@ export default function DocumentDetailsPage() {
   const data = useLoaderData() as LoaderData;
 
   return (
-    <div className="">
-      <h3 className="">{data.document.title}</h3>
-      {!!data.document.image && <img src={data.document.image} alt={data.document.title} />}
-      <p className="">{showType(data.document.type as DocumentTypeEnum)}</p>
-      <p className="">{data.document.text}</p>
-      <p className="">{showDate(data.document.createdAt)}</p>
-
-      <hr className="" />
-      <Form method="post">
-        <button
-          type="submit"
-          className=""
-        >
-          Delete
-        </button>
-      </Form>
+    <div className="document">
+      <h2>{data.document.title}</h2>
+      <div className="body">
+        {!!data.document.image && <img src={data.document.image} alt={data.document.title} />}
+        <div className="info">
+          {data.document.text}
+          <div className="footer">
+            <div>{showType(data.document.type as DocumentTypeEnum)}</div>
+            <div className="date">{showDate(data.document.createdAt)}</div>
+          </div>
+          <Form method="post">
+            <button
+              type="submit"
+              className=""
+            >
+              Delete
+            </button>
+          </Form>
+        </div>
+      </div>
     </div>
   );
 }

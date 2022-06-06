@@ -1,0 +1,42 @@
+.new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  padding: 16px;
+
+  form {
+    .field {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        display: flex;
+        flex-direction: column;
+
+        span {
+          width: 200px;
+          font-weight: bold;
+        }
+      }
+
+      .error {
+        text-align: end;
+        color: red;
+      }
+    }
+    .buttons {
+      display: flex;
+      flex-direction: row-reverse;
+
+      button {
+        background-color: rebeccapurple;
+        color: white;
+        padding: 8px;
+        margin: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
