@@ -9,18 +9,23 @@ import {
   useSubmit,
 } from "@remix-run/react";
 
-import { Select, Paginator } from "~/components";
+import { Select, Paginator, DocumentCard } from "~/components";
 import { getDocuments } from "~/models/document.server";
 import type { GetDocumentsType } from "~/models/type";
 import { DocumentTypeEnum } from "~/models/type";
 
 import styles from "~/styles/index.css";
 import stylesPaginator from "~/styles/Components/Paginator/index.css";
+import stylesDocumentCard from "~/styles/Components/DocumentCard/index.css";
 
 // TODO
 // Check if this is the correct way to add styles from a component
 export function links() {
-  return [{ rel: "stylesheet", href: styles }, { rel: "stylesheet", href: stylesPaginator }];
+  return [
+    { rel: "stylesheet", href: styles },
+    { rel: "stylesheet", href: stylesPaginator },
+    { rel: "stylesheet", href: stylesDocumentCard }
+  ];
 }
 
 type LoaderData = {
@@ -82,7 +87,7 @@ export default function Index() {
           {documents.data.map((document) => (
             <li key={document.id}>
               <Link to={"document/" + document.id} className="link">
-                {document.type} - {document.title} - {document.date}
+                <DocumentCard document={document} />
               </Link>
             </li>
           ))}
