@@ -4,7 +4,9 @@ import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
 
 import { createDocument } from "~/models/document.server";
-import type { DocumentTypeEnum, NewDocumentType } from "~/models/type";
+import { DocumentTypeEnum } from "~/models/type";
+import type { NewDocumentType } from "~/models/type";
+import { showType } from '~/utils'
 
 type ActionData = {
     errors?: {
@@ -51,6 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function NewDocumentPage() {
     const actionData = useActionData() as ActionData;
     const titleRef = React.useRef<HTMLInputElement>(null);
+    const typeRef = React.useRef<HTMLSelectElement>(null);
     const textRef = React.useRef<HTMLTextAreaElement>(null);
 
     React.useEffect(() => {
@@ -72,7 +75,7 @@ export default function NewDocumentPage() {
             }}
         >
             <div>
-                <label className="flex w-full flex-col gap-1">
+                <label className="">
                     <span>Title: </span>
                     <input
                         ref={titleRef}
@@ -92,7 +95,29 @@ export default function NewDocumentPage() {
             </div>
 
             <div>
-                <label className="flex w-full flex-col gap-1">
+                <label className="">
+                    <span>Type: </span>
+                    <select
+                        ref={typeRef}
+                        name="type"
+                    >
+                        {Object.keys(DocumentTypeEnum).map(type => {
+                            return (
+                                <option key={type} value={type}>{showType(type as DocumentTypeEnum)}</option>
+                            )
+                        })}
+                    </select>
+
+                </label>
+                {actionData?.errors?.title && (
+                    <div className="pt-1 text-red-700" id="title-error">
+                        {actionData.errors.title}
+                    </div>
+                )}
+            </div>
+
+            <div>
+                <label className="">
                     <span>Text: </span>
                     <textarea
                         ref={textRef}

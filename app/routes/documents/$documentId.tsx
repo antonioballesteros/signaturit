@@ -2,9 +2,10 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 
-import type { DocumentType } from "~/models/type";
+import type { DocumentType, DocumentTypeEnum } from "~/models/type";
 import { deleteDocument } from "~/models/document.server";
 import { getDocument } from "~/models/document.server";
+import { showType, showDate } from "~/utils"
 
 
 type LoaderData = {
@@ -36,8 +37,10 @@ export default function DocumentDetailsPage() {
     <div className="">
       <h3 className="">{data.document.title}</h3>
       {!!data.document.image && <img src={data.document.image} alt={data.document.title} />}
-      <p className="">{data.document.type}</p>
+      <p className="">{showType(data.document.type as DocumentTypeEnum)}</p>
       <p className="">{data.document.text}</p>
+      <p className="">{showDate(data.document.createdAt)}</p>
+
       <hr className="" />
       <Form method="post">
         <button

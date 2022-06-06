@@ -18,6 +18,12 @@ export default function Index() {
         <button>Start Managing Documents</button>
       </Link>
 
+      <p>
+        Remember to execute from console the first time
+      </p>
+      <code>npm run setup</code>
+
+
     </div>
 
   );

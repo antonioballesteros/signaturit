@@ -1,12 +1,11 @@
 import type { DocumentType, DocumentTypeEnum } from "~/models/type";
+import { showType, showDate } from '~/utils'
 
 type DocumentCardType = {
     document: DocumentType
 }
 
-const showType = (type: DocumentTypeEnum): string => {
-    return type.charAt(0) + type.slice(1).toLowerCase();
-}
+
 
 const DocumentCard = ({ document }: DocumentCardType) => {
     return <div className="document-card">
@@ -16,8 +15,8 @@ const DocumentCard = ({ document }: DocumentCardType) => {
                 {document.title}
             </div>
             <div className="body">
-                <div className="type">{showType(document.type)}</div>
-                <div className="type">{document.date}</div>
+                <div className="type">{showType(document.type as DocumentTypeEnum)}</div>
+                <div className="type">{showDate(document.createdAt)}</div>
             </div>
         </div>
     </div>

@@ -6,18 +6,17 @@ export enum DocumentTypeEnum {
 
 export type DocumentType = {
   id: string;
-  type: DocumentTypeEnum;
+  type: string;
   title: string;
-  date: string;
-  text?: string;
-  image?: string;
+  text: string | null;
+  image: string | null;
 };
 
 export type NewDocumentType = {
   type: DocumentTypeEnum;
   title: string;
-  text?: string;
-  image?: string;
+  text: string | null;
+  image: string | null;
 };
 
 export type GetDocumentsType = {

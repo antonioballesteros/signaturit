@@ -1,0 +1,18 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./db/signaturit.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Document {
+  id    String  @id @default(cuid())
+  title String
+  type  String
+  text  String?
+  image String?
+
+  createdAt DateTime @default(now())
+}
