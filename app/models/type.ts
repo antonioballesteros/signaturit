@@ -9,6 +9,8 @@ export type DocumentType = {
   type: DocumentTypeEnum;
   title: string;
   date: string;
+  text?: string;
+  image?: string;
 };
 
 export type GetDocumentsType = {

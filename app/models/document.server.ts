@@ -11,14 +11,32 @@ const setFakeType = (id: number): DocumentTypeEnum => {
   }
   return DocumentTypeEnum.SIMPLE;
 };
+const setFakeText = (): string => {
+  return `Lorem ipsum dolor sit amet, consectetur adipiscing 
+  elit. Etiam vitae velit metus. Lorem ipsum dolor sit amet, 
+  consectetur adipiscing elit. Aenean diam tellus, imperdiet quis nisl id, 
+  fermentum ultricies ex. Aenean placerat, dolor sollicitudin consectetur 
+  bibendum, mi libero bibendum nisl, vitae malesuada metus arcu nec erat. 
+  Sed eleifend quam pulvinar, hendrerit ex pharetra, commodo augue. 
+  Aenean nec urna ac purus pellentesque consectetur vitae ut mi. 
+  Ut lacinia lectus quis velit mattis, id pharetra ex posuere. 
+  Curabitur congue massa eget diam pellentesque elementum. 
+  Ut dapibus ante ut ipsum faucibus rhoncus.`;
+};
+const setFakeImage = (id: number): string => {
+  return `https://picsum.photos/id/${id}/200/300`;
+};
 
 const buildFakeDocuments = () => {
   return [...Array(250).keys()].map((id) => {
+    const type = setFakeType(id);
     return {
       id: `aaa${id}`,
-      type: setFakeType(id),
+      type,
       title: `Document ${id}`,
       date: "11-05-2020",
+      text: type !== DocumentTypeEnum.SIMPLE ? setFakeText() : undefined,
+      image: type === DocumentTypeEnum.ADVANCED ? setFakeImage(id) : undefined,
     };
   });
 };
