@@ -99,21 +99,29 @@ export default function Index() {
 
           <hr />
 
-          <ul className="document-list">
-            {documents.data.map((document) => (
-              <li key={document.id}>
-                <Link to={`${document.id}${urlSearched}`} className="link">
-                  <DocumentCard document={document} />
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Paginator
-            name="page"
-            total={documents.total}
-            actual={page}
-            length={length}
-          />
+          {documents.data.length ? (
+            <>
+              <ul className="document-list">
+                {documents.data.map((document) => (
+                  <li key={document.id}>
+                    <Link to={`${document.id}${urlSearched}`} className="link">
+                      <DocumentCard document={document} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Paginator
+                name="page"
+                total={documents.total}
+                actual={page}
+                length={length}
+              />
+            </>
+          ) : documents.total === 0 ? (
+            <h3>There is no document available</h3>
+          ) : (
+            <h3>There is no document available with this filter</h3>
+          )}
         </Form>
       </div>
       <div className="main">
