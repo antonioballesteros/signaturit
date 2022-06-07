@@ -24,4 +24,10 @@ describe("getRangePages", () => {
     expect(firstPage).toBe(1);
     expect(lastPage).toBe(4);
   });
+
+  test("should return last equal to total pages", () => {
+    const [firstPage, lastPage] = getRangePages(100, 10, 9);
+    expect(firstPage).toBe(6);
+    expect(lastPage).toBe(10);
+  });
 });
