@@ -52,7 +52,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 const FILTERS = [
   {
     id: "",
-    label: "all",
+    label: "All",
   },
   {
     id: DocumentTypeEnum.SIMPLE,
