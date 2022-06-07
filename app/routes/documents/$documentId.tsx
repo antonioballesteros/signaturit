@@ -73,7 +73,7 @@ export default function DocumentDetailsPage() {
           </div>
           <Form
             method="post"
-            action={`/ documents / ${document.id} ${urlSearched}`}
+            action={`/documents/${document.id}${urlSearched}`}
           >
             <div className="nearest">
               {!!nearestDocuments.prev && (
