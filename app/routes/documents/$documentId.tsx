@@ -2,16 +2,18 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Link, Form, useCatch, useLoaderData } from "@remix-run/react";
 
-import type { DocumentType, DocumentTypeEnum, NearestDocumentsType } from "~/models/type";
+import type {
+  DocumentType,
+  DocumentTypeEnum,
+  NearestDocumentsType,
+} from "~/models/type";
 import { deleteDocument } from "~/models/document.server";
 import { getDocument, getNearestDocuments } from "~/models/document.server";
-import { showType, showDate } from "~/utils"
+import { showType, showDate } from "~/utils";
 import styles from "~/styles/routes/documents/$documentId.css";
 
 export function links() {
-  return [
-    { rel: "stylesheet", href: styles }
-  ];
+  return [{ rel: "stylesheet", href: styles }];
 }
 
 type LoaderData = {
@@ -32,7 +34,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   // TIP:
   // never use params.documentId as parameter here
   // we will execute a raw query, it could be a security problem
-  const nearestDocuments = await getNearestDocuments(document.id)
+  const nearestDocuments = await getNearestDocuments(document.id);
 
   return json<LoaderData>({ document, urlSearched, nearestDocuments });
 };
@@ -51,24 +53,28 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export default function DocumentDetailsPage() {
-  const { document, urlSearched, nearestDocuments } = useLoaderData() as LoaderData;
+  const { document, urlSearched, nearestDocuments } =
+    useLoaderData() as LoaderData;
 
   return (
     <div className="document">
       <h2>{document.title}</h2>
       <div className="body">
-        {!!document.image &&
+        {!!document.image && (
           <div className="img">
             <img src={document.image} alt={document.title} />
           </div>
-        }
+        )}
         <div className="info">
           {document.text}
           <div className="footer">
             <div>{showType(document.type as DocumentTypeEnum)}</div>
             <div className="date">{showDate(document.createdAt)}</div>
           </div>
-          <Form method="post" action={`/ documents / ${document.id} ${urlSearched}`}>
+          <Form
+            method="post"
+            action={`/ documents / ${document.id} ${urlSearched}`}
+          >
             <div className="nearest">
               {!!nearestDocuments.prev && (
                 <Link to={`/documents/${nearestDocuments.prev}`}>
@@ -80,23 +86,19 @@ export default function DocumentDetailsPage() {
                   <button>Next</button>
                 </Link>
               )}
-
             </div>
             <div className="actions">
-              <button
-                type="submit"
-                className=""
-              >
+              <button type="submit" className="">
                 Delete
               </button>
-              <Link to={`/documents${urlSearched}`} >
+              <Link to={`/documents${urlSearched}`}>
                 <button>Close</button>
               </Link>
             </div>
           </Form>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

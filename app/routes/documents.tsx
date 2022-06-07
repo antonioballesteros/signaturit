@@ -7,7 +7,7 @@ import {
   Form,
   useSearchParams,
   useSubmit,
-  Outlet
+  Outlet,
 } from "@remix-run/react";
 
 import { Select, Paginator, DocumentCard } from "~/components";
@@ -25,7 +25,7 @@ export function links() {
   return [
     { rel: "stylesheet", href: styles },
     { rel: "stylesheet", href: stylesPaginator },
-    { rel: "stylesheet", href: stylesDocumentCard }
+    { rel: "stylesheet", href: stylesDocumentCard },
   ];
 }
 
@@ -45,7 +45,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return json<LoaderData>({
     documents: await getDocuments(filter as DocumentTypeEnum, page, length),
-    urlSearched
+    urlSearched,
   });
 };
 
@@ -85,13 +85,16 @@ export default function Index() {
       <div className="sidebar">
         <h1>Documents</h1>
         <Form method="get" onChange={handleChange}>
-
           <div className="header">
             <Link to={`new${urlSearched}`} className="">
               + New document
             </Link>
 
-            <Select name="filter" options={FILTERS} selected={params.get("filter")} />
+            <Select
+              name="filter"
+              options={FILTERS}
+              selected={params.get("filter")}
+            />
           </div>
 
           <hr />
@@ -105,13 +108,17 @@ export default function Index() {
               </li>
             ))}
           </ul>
-          <Paginator name="page" total={documents.total} actual={page} length={length} />
+          <Paginator
+            name="page"
+            total={documents.total}
+            actual={page}
+            length={length}
+          />
         </Form>
-      </div >
+      </div>
       <div className="main">
         <Outlet />
       </div>
-    </div >
-
+    </div>
   );
 }
