@@ -1,4 +1,4 @@
-import type { DocumentTypeEnum } from "./type";
+import type { DocumentTypeEnum, NearestDocumentsType } from "./type";
 import type { GetDocumentsType, DocumentType, NewDocumentType } from "./type";
 import { getTypeFromNewDocument } from "~/utils";
 
@@ -28,7 +28,7 @@ export async function getDocuments(
   const documents = await prisma.document.findMany({
     where,
     orderBy: {
-      createdAt: "desc",
+      id: "desc",
     },
     skip,
     take: length,
@@ -44,6 +44,23 @@ export async function getDocuments(
 
 export async function getDocument(id: string): Promise<DocumentType | null> {
   return prisma.document.findUnique({ where: { id } });
+}
+
+export async function getNearestDocuments(
+  id: string
+): Promise<NearestDocumentsType> {
+  const result: NearestDocumentsType[] = await prisma.$queryRaw`
+  select prev, next
+  from (
+      select id, 
+              lag(id) over (order by id) as prev,
+              lead(id) over (order by id) as next
+      from Document
+  ) as t
+  where id = ${id}
+  ;`;
+
+  return result[0];
 }
 
 export async function deleteDocument(id: string): Promise<boolean> {

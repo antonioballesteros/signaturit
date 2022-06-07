@@ -22,3 +22,8 @@ export type GetDocumentsType = {
   total: number;
   data: DocumentType[];
 };
+
+export type NearestDocumentsType = {
+  prev: string | null;
+  next: string | null;
+};

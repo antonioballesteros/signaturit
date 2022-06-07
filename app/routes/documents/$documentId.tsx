@@ -2,9 +2,9 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Link, Form, useCatch, useLoaderData } from "@remix-run/react";
 
-import type { DocumentType, DocumentTypeEnum } from "~/models/type";
+import type { DocumentType, DocumentTypeEnum, NearestDocumentsType } from "~/models/type";
 import { deleteDocument } from "~/models/document.server";
-import { getDocument } from "~/models/document.server";
+import { getDocument, getNearestDocuments } from "~/models/document.server";
 import { showType, showDate } from "~/utils"
 import styles from "~/styles/routes/documents/$documentId.css";
 
@@ -16,7 +16,8 @@ export function links() {
 
 type LoaderData = {
   document: DocumentType;
-  urlSearched: string
+  urlSearched: string;
+  nearestDocuments: NearestDocumentsType;
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -27,7 +28,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!document) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json<LoaderData>({ document, urlSearched });
+
+  // TIP:
+  // never use params.documentId as parameter here
+  // we will execute a raw query, it could be a security problem
+  const nearestDocuments = await getNearestDocuments(document.id)
+
+  return json<LoaderData>({ document, urlSearched, nearestDocuments });
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -44,7 +51,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export default function DocumentDetailsPage() {
-  const { document, urlSearched } = useLoaderData() as LoaderData;
+  const { document, urlSearched, nearestDocuments } = useLoaderData() as LoaderData;
 
   return (
     <div className="document">
@@ -61,20 +68,35 @@ export default function DocumentDetailsPage() {
             <div>{showType(document.type as DocumentTypeEnum)}</div>
             <div className="date">{showDate(document.createdAt)}</div>
           </div>
-          <Form method="post" action={`/documents/${document.id}${urlSearched}`}>
-            <Link to={`/documents${urlSearched}`} className="">
-              <button>Close</button>
-            </Link>
-            <button
-              type="submit"
-              className=""
-            >
-              Delete
-            </button>
+          <Form method="post" action={`/ documents / ${document.id} ${urlSearched}`}>
+            <div className="nearest">
+              {!!nearestDocuments.prev && (
+                <Link to={`/documents/${nearestDocuments.prev}`}>
+                  <button>Prev</button>
+                </Link>
+              )}
+              {!!nearestDocuments.next && (
+                <Link to={`/documents/${nearestDocuments.next}`}>
+                  <button>Next</button>
+                </Link>
+              )}
+
+            </div>
+            <div className="actions">
+              <button
+                type="submit"
+                className=""
+              >
+                Delete
+              </button>
+              <Link to={`/documents${urlSearched}`} >
+                <button>Close</button>
+              </Link>
+            </div>
           </Form>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
