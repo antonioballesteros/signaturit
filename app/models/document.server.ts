@@ -34,7 +34,9 @@ export async function getDocuments(
     take: length,
   });
 
-  const total = await prisma.document.count();
+  const total = await prisma.document.count({
+    where,
+  });
 
   return {
     total,
