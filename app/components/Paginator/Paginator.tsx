@@ -7,24 +7,26 @@ type PaginatorType = {
 
 const DELTA = 3;
 
-export const getRangePages = (total: number, length: number, actual: number): [number, number] => {
+export const getRangePages = (
+  total: number,
+  length: number,
+  actual: number
+): [number, number] => {
   if (!total) {
-    return [0, 0]
+    return [0, 0];
   }
   const totalPages = Math.ceil(total / length);
   if (actual > totalPages) {
     actual = totalPages;
   }
-  const lastPage = (totalPages - actual) < DELTA ? totalPages : actual + DELTA;
-  const firstPage = (actual - DELTA) > 1 ? actual - DELTA : 1;
+  const lastPage = totalPages - actual < DELTA ? totalPages : actual + DELTA;
+  const firstPage = actual - DELTA > 1 ? actual - DELTA : 1;
 
-  return [firstPage, lastPage]
-}
-
+  return [firstPage, lastPage];
+};
 
 const Paginator = ({ name, total, actual, length }: PaginatorType) => {
-
-  const [firstPage, lastPage] = getRangePages(total, length, actual)
+  const [firstPage, lastPage] = getRangePages(total, length, actual);
   return (
     <div className="paginator">
       <ul>
