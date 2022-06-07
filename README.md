@@ -1,10 +1,28 @@
-# Welcome to Remix!
+# Signaturit test
 
-- [Remix Docs](https://remix.run/docs)
+Antonio 06.06.2022
 
-## Development
+# How to install and test it
 
-From your terminal:
+## Install
+
+```sh
+npm i
+```
+
+## Init database and fill it with some random documents
+
+```sh
+npm run setup
+```
+
+You can see values with `Prisma Studio`
+
+```sh
+npx prisma studio
+```
+
+## Run it
 
 ```sh
 npm run dev
@@ -12,42 +30,20 @@ npm run dev
 
 This starts your app in development mode, rebuilding assets on file changes.
 
-## Deployment
+## Ideas implemented
 
-First, build your app for production:
+- I wanted to test [remix](https://remix.run/). I had never tried it before and this exercise seemed like a good candidate.
+- I tried to avoid to store the updates, but at the end, it's easier to manage states if the information is store in a database. [prisma](https://www.prisma.io/) is the chosen.
+- Only sqlite, storing the information in a file.
 
-```sh
-npm run build
+```
+provider = "sqlite"
+url      = "file:./db/signaturit.db"
 ```
 
-Then run the app in production mode:
+## Ideas not implemented
 
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
-
-### Using a Template
-
-When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
-
-```sh
-cd ..
-# create a new project, and pick a pre-configured host
-npx create-remix@latest
-cd my-new-remix-app
-# remove the new project's app (not the old one!)
-rm -rf app
-# copy your app over
-cp -R ../my-old-remix-app/app app
-```
+- Create some kind of login or session system
+- Refactor the styling system. Remix does not recommend any system. I implemented [remix route styling](hhttps://remix.run/docs/en/v1/guides/styling#route-styles) but the experience has not been good. I think postcss could be easier and powerful
+- Ofc, translations, but out of scope :/
+- I would like to implement more tests and maybe cypress
