@@ -20,6 +20,7 @@ export type NewDocumentType = {
 
 export type GetDocumentsType = {
   total: number;
+  totalFiltered: number;
   data: DocumentType[];
 };
 

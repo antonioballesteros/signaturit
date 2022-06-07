@@ -25,7 +25,7 @@
 
       ul.document-list {
         list-style-type: none;
-        margin: 16px 0;
+        margin: 16px 0 0 0;
         padding: 0;
 
         li {
@@ -36,6 +36,11 @@
             text-decoration: none;
           }
         }
+      }
+
+      h5.amount {
+        margin: 0;
+        text-align: end;
       }
     }
   }

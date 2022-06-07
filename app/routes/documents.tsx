@@ -79,6 +79,7 @@ export default function Index() {
 
   const page = parseInt(params.get("page") || "1");
   const length = parseInt(params.get("length") || "10");
+  const filter = params.get("filter") || null;
 
   return (
     <div className="documents">
@@ -93,13 +94,13 @@ export default function Index() {
             <Select
               name="filter"
               options={FILTERS}
-              selected={params.get("filter")}
+              selected={filter}
             />
           </div>
 
           <hr />
 
-          {documents.data.length ? (
+          {documents.totalFiltered ? (
             <>
               <ul className="document-list">
                 {documents.data.map((document) => (
@@ -110,6 +111,9 @@ export default function Index() {
                   </li>
                 ))}
               </ul>
+              <h5 className="amount">
+                Documents: {!!filter && `${documents.totalFiltered}/`}{documents.total}
+              </h5>
               <Paginator
                 name="page"
                 total={documents.total}
