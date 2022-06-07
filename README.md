@@ -33,15 +33,16 @@ This starts your app in development mode, rebuilding assets on file changes.
 ## Ideas implemented
 
 - I wanted to test [remix](https://remix.run/). I had never tried it before and this exercise seemed like a good candidate.
-- I tried to avoid to store the updates, but at the end, it's easier to manage states if the information is store in a database. [prisma](https://www.prisma.io/) is the chosen.
-- Only sqlite, storing the information in a file.
-- Images: Only needs define the url, it's not a file uploader.
-- Unit tested. At least a bit
+- I tried to avoid to store the updates, but at the end, it's easier to manage states if the information is stored in a database. [prisma](https://www.prisma.io/) is the chosen.
+- Only sqlite, storing the information in a file. It could be modified easily
 
 ```
 provider = "sqlite"
 url      = "file:./db/signaturit.db"
 ```
+
+- Images: Input field only needs an url, it's not a file uploader.
+- Unit tested. At least libraries
 
 ## Ideas not implemented
 
